@@ -1,96 +1,121 @@
 @import "tailwindcss";
 
 /*
-  Pupil — "calm scientific instrument / lab notebook"
-  Warm parchment ground, deep ink, a single oxidized-copper accent, muted coral for understanding.
-  Fonts loaded via next/font in layout.tsx (Fraunces display, Hanken Grotesk UI).
+  Pupil — "The Chalkboard Lecture Hall"
+  Real slate texture (generated), chalk-white humanist type, one coral accent for
+  understanding. Display: Bricolage Grotesque. Body: Hanken Grotesk.
+  Chalk annotations: Caveat (used sparingly, like a teacher's margin note).
 */
 
 :root {
-  --paper: #ece5d6;
-  --paper-2: #e4dcc9;
-  --paper-card: #f3eee2;
-  --ink: #211c17;
-  --ink-soft: #5b5248;
-  --ink-faint: #8b8170;
-  --line: #d3c9b3;
+  --slate: #18221e;
+  --slate-2: #1f2b26;
+  --slate-card: #202d27;
+  --chalk: #eef1ea;
+  --chalk-soft: #b7c3bb;
+  --chalk-faint: #7f8b82;
+  --line: #38473f;
+  --coral: #ec8a63;
+  --coral-deep: #d6714b;
+  --cyan: #7fb9c2;
+  --amber: #d8b367;
+  --green: #93c9a6;
 
-  --copper: #2f6f63;      /* oxidized copper / verdigris accent */
-  --copper-deep: #245349;
-  --coral: #c75d44;       /* "understanding" highlight */
-  --amber: #c79a3d;       /* partial */
-  --gold: #b98a2e;
-
-  /* belief states */
-  --s-unknown: #a99f8c;
-  --s-misconceived: #c75d44;
-  --s-partial: #c79a3d;
-  --s-mastered: #2f6f63;
+  --s-unknown: #7f8b82;
+  --s-misconceived: #ec8a63;
+  --s-partial: #d8b367;
+  --s-mastered: #93c9a6;
 }
 
 @theme inline {
-  --color-paper: var(--paper);
-  --color-paper-2: var(--paper-2);
-  --color-paper-card: var(--paper-card);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-ink-faint: var(--ink-faint);
+  --color-slate: var(--slate);
+  --color-slate-2: var(--slate-2);
+  --color-slate-card: var(--slate-card);
+  --color-chalk: var(--chalk);
+  --color-chalk-soft: var(--chalk-soft);
+  --color-chalk-faint: var(--chalk-faint);
   --color-line: var(--line);
-  --color-copper: var(--copper);
-  --color-copper-deep: var(--copper-deep);
   --color-coral: var(--coral);
+  --color-coral-deep: var(--coral-deep);
+  --color-cyan: var(--cyan);
   --color-amber: var(--amber);
+  --color-green: var(--green);
 
-  --font-display: var(--font-fraunces);
-  --font-sans: var(--font-hanken);
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-chalk: var(--font-chalk), ui-serif, cursive;
 }
 
 @layer base {
-  html {
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   body {
-    background-color: var(--paper);
-    color: var(--ink);
-    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-    /* faint ruled-paper texture */
-    background-image:
-      radial-gradient(circle at 12% -10%, rgba(47, 111, 99, 0.06), transparent 40%),
-      radial-gradient(circle at 100% 0%, rgba(199, 93, 68, 0.05), transparent 35%);
-    background-attachment: fixed;
+    background-color: var(--slate);
+    color: var(--chalk);
+    font-family: var(--font-body), system-ui, sans-serif;
+    position: relative;
   }
-  ::selection {
-    background: rgba(47, 111, 99, 0.22);
+  /* real slate chalkboard texture, dimmed + vignetted for contrast */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("/art/slate.jpg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -2;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(120% 90% at 50% -10%, rgba(236, 138, 99, 0.08), transparent 55%),
+      radial-gradient(120% 120% at 50% 120%, rgba(0, 0, 0, 0.55), transparent 60%),
+      linear-gradient(180deg, rgba(13,18,16,0.35), rgba(13,18,16,0.15));
+    z-index: -1;
   }
   h1, h2, h3 {
-    font-family: var(--font-display), Georgia, serif;
-    font-weight: 470;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
+  ::selection { background: rgba(236, 138, 99, 0.3); color: #fff; }
 }
 
-/* one orchestrated page-load: staggered reveal */
+/* hand-written chalk annotation */
+.chalk { font-family: var(--font-chalk), cursive; font-weight: 600; }
+
+/* ---- motion ---- */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.rise { animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
-@keyframes inkfill {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(var(--fill, 1)); }
+/* chalk stroke being drawn */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.chalk-draw {
+  stroke-dasharray: var(--len, 400);
+  stroke-dashoffset: var(--len, 400);
+  animation: draw 1.4s ease-out 0.3s forwards;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 1; }
+@keyframes dust {
+  0% { opacity: 0; transform: translateY(0) scale(0.8); }
+  20% { opacity: 0.7; }
+  100% { opacity: 0; transform: translateY(-18px) scale(1.1); }
 }
+
+@keyframes blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
 .thinking-dot { animation: blink 1.2s infinite; }
 .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
 .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
 
+/* understanding meter fills like a chalk swipe */
+.meter-fill { transition: width 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
 @media (prefers-reduced-motion: reduce) {
-  .rise { animation: none; }
-  .thinking-dot { animation: none; }
+  .rise, .chalk-draw, .thinking-dot { animation: none; }
+  .chalk-draw { stroke-dashoffset: 0; }
 }

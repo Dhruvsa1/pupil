@@ -1,16 +1,22 @@
 import type { Metadata } from 'next'
-import { Fraunces, Hanken_Grotesk } from 'next/font/google'
+import { Bricolage_Grotesque, Hanken_Grotesk, Caveat } from 'next/font/google'
 import './globals.css'
 
-const fraunces = Fraunces({
-  variable: '--font-fraunces',
+const display = Bricolage_Grotesque({
+  variable: '--font-display',
   subsets: ['latin'],
-  axes: ['opsz', 'SOFT'],
+  weight: ['400', '500', '600', '700'],
 })
 
-const hanken = Hanken_Grotesk({
-  variable: '--font-hanken',
+const body = Hanken_Grotesk({
+  variable: '--font-body',
   subsets: ['latin'],
+})
+
+const chalk = Caveat({
+  variable: '--font-chalk',
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -32,9 +38,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${hanken.variable} h-full`}
+      className={`${display.variable} ${body.variable} ${chalk.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full">{children}</body>
     </html>
   )
 }
